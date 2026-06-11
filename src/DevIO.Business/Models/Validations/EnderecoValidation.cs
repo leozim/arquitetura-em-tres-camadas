@@ -4,7 +4,7 @@ namespace DevIO.Business.Models.Validations;
 
 public class EnderecoValidation : AbstractValidator<Endereco>
 {
-    EnderecoValidation()
+    public EnderecoValidation()
     {
         RuleFor(c => c.Logradouro)
             .NotEmpty().WithMessage("O campo {PropertyName} precisa ser fornecido")
