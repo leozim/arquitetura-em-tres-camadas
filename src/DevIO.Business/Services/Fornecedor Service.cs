@@ -24,6 +24,11 @@ public class FornecedorService : BaseService, IFornecedorService
         if (!ExecutarValidacao(new FornecedorValidation(), fornecedor)
             || !ExecutarValidacao(new EnderecoValidation(), fornecedor.Endereco))
         // Validar se ja nao existe outro fornecedor com o mesmo doc.
+            if (_fornecedorRepository.Buscar(f => f.Documento == fornecedor.Documento).Result.Any())
+            {
+                Notificar("Já existe um fornecedor com este documento informado");
+                return;
+            }
         
         await _fornecedorRepository.Adicionar(fornecedor);
     }
@@ -31,6 +36,13 @@ public class FornecedorService : BaseService, IFornecedorService
     public async Task Atualizar(Fornecedor fornecedor)
     {
         if (!ExecutarValidacao(new FornecedorValidation(), fornecedor)) return;
+
+        if (_fornecedorRepository.Buscar(f => f.Documento == fornecedor.Documento && f.Id != fornecedor.Id).Result
+            .Any())
+        {
+            Notificar("Já existe um fornecedor com este documento informado");
+            return;
+        }
         
         await _fornecedorRepository.Atualizar(fornecedor);
     }
