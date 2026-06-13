@@ -49,6 +49,27 @@ public class FornecedorService : BaseService, IFornecedorService
 
     public async Task Remover(Guid id)
     {
+        var fornecedor = await _fornecedorRepository.ObterFornecedorProdutoEndereco(id);
+
+        if (fornecedor == null)
+        {
+            Notificar("Fornecedor não existe");
+            return;
+        }
+
+        if (fornecedor.Produtos.Any())
+        {
+            Notificar("O fornecedor possui produtos cadastrados!");
+            return;
+        }
+
+        var endereco = await _fornecedorRepository.ObterEderecoPorFornecedor(id);
+
+        if (endereco != null)
+        {
+            await _fornecedorRepository.RemoverEnderecoFornecedor(endereco);
+        }
+        
         await _fornecedorRepository.Remover(id);
     }
 }

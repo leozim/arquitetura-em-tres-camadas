@@ -8,4 +8,5 @@ public interface IFornecedorRepository : IRepository<Fornecedor>
     Task<Fornecedor> ObterFornecedorProdutoEndereco(Guid id);
     
     Task<Endereco> ObterEderecoPorFornecedor(Guid fornecedorId);
+    Task RemoverEnderecoFornecedor(Endereco endereco);
 }
